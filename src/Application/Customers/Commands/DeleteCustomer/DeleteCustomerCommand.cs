@@ -1,27 +1,25 @@
 ﻿using CleanCRM.Application.Common.Exceptions;
 using CleanCRM.Application.Common.Interfaces;
-using CleanCRM.Application.Customers.Common;
 using CleanCRM.Domain.Entities.Customers;
 using MediatR;
 
-namespace CleanCRM.Application.Customers.Queries.GetCustomer;
+namespace CleanCRM.Application.Customers.Commands.DeleteCustomer;
 
-public record GetCustomerQuery : IRequest<CustomerDto>
+public record DeleteCustomerCommand : IRequest
 {
     public int Id { get; set; }
 }
 
-
-public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, CustomerDto>
+public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand>
 {
     private readonly IApplicationDbContext _context;
 
-    public GetCustomerQueryHandler(IApplicationDbContext context)
+    public DeleteCustomerCommandHandler(IApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<CustomerDto> Handle(GetCustomerQuery request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Customers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
@@ -30,6 +28,8 @@ public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, Custome
             throw new NotFoundException(nameof(Customer), request.Id);
         }
 
-        return new CustomerDto(entity);
+        _context.Customers.Remove(entity);
+
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
