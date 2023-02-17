@@ -23,7 +23,7 @@ public class GetCustomerListQueryHandler : IRequestHandler<GetCustomerListQuery,
 
     public async Task<ListResult<CustomerDto>> Handle(GetCustomerListQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.Customers.AsQueryable();
+        var query = _context.Customers.OrderBy(x => x.Id).AsQueryable();
 
         var total = await query.CountAsync(cancellationToken);
         var entities = await query.Skip(request.Skip).Take(request.Take).ToListAsync(cancellationToken);

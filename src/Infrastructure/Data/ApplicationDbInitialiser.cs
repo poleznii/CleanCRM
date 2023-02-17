@@ -1,4 +1,5 @@
 ﻿using CleanCRM.Domain.Entities.Customers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CleanCRM.Infrastructure.Data;
@@ -14,12 +15,27 @@ public class ApplicationDbInitialiser
         _context = context;
     }
 
+    public async Task InitAsync()
+    {
+        try
+        {
+            if (_context.Database.IsSqlServer())
+            {
+                await _context.Database.MigrateAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Database init error");
+            throw;
+        }
+    }
+
     public async Task SeedAsync()
     {
         try
         {
             await TrySeedAsync();
-            _logger.LogInformation($"Customers in db {_context.Customers.Count()}");
         }
         catch (Exception ex)
         {
@@ -30,25 +46,25 @@ public class ApplicationDbInitialiser
 
     private async Task TrySeedAsync()
     {
-        if (!_context.Customers.Any())
-        {
-            _context.Customers.AddRange(new[]
-            {
-                new Customer
-                {
-                    Name = "Customer 1",
-                },
-                new Customer
-                {
-                    Name = "Customer 2",
-                },
-                new Customer
-                {
-                    Name = "Customer 3",
-                }
-            });
+        //if (!_context.Customers.Any())
+        //{
+        //    _context.Customers.AddRange(new[]
+        //    {
+        //        new Customer
+        //        {
+        //            Name = "Customer 1",
+        //        },
+        //        new Customer
+        //        {
+        //            Name = "Customer 2",
+        //        },
+        //        new Customer
+        //        {
+        //            Name = "Customer 3",
+        //        }
+        //    });
 
-            await _context.SaveChangesAsync();
-        }
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }
