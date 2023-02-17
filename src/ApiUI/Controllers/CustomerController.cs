@@ -30,16 +30,14 @@ public class CustomerController : ApiControllerBase
     }
 
     [HttpPut("update")]
-    public async Task<ActionResult> Update([FromBody] UpdateCustomerCommand command)
+    public async Task<ActionResult<Result>> Update([FromBody] UpdateCustomerCommand command)
     {
-        await Mediator.Send(command);
-        return NoContent();
+        return await Mediator.Send(command);
     }
 
     [HttpDelete("delete/{id}")]
-    public async Task<ActionResult> Delete([FromRoute] DeleteCustomerCommand command)
+    public async Task<ActionResult<Result>> Delete([FromRoute] DeleteCustomerCommand command)
     {
-        await Mediator.Send(command);
-        return NoContent();
+        return await Mediator.Send(command);
     }
 }

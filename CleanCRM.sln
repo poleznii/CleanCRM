@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiUI", "src\ApiUI\ApiUI.csproj", "{8CA9FE8F-135E-4404-BE26-BE86155B55D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.IntegrationTests", "tests\Application.IntegrationTests\Application.IntegrationTests.csproj", "{7D6DD52A-96E4-4E71-8791-6B56C59BAAD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{8CA9FE8F-135E-4404-BE26-BE86155B55D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CA9FE8F-135E-4404-BE26-BE86155B55D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CA9FE8F-135E-4404-BE26-BE86155B55D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D6DD52A-96E4-4E71-8791-6B56C59BAAD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D6DD52A-96E4-4E71-8791-6B56C59BAAD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D6DD52A-96E4-4E71-8791-6B56C59BAAD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D6DD52A-96E4-4E71-8791-6B56C59BAAD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{8A0E5E64-FCF8-417E-984A-7BAFD6512196} = {54E3BA7C-94B2-49EE-9F1C-1F268917665E}
 		{EC6D4EC5-B41A-46AF-B28D-8A283ECC034D} = {54E3BA7C-94B2-49EE-9F1C-1F268917665E}
 		{8CA9FE8F-135E-4404-BE26-BE86155B55D6} = {54E3BA7C-94B2-49EE-9F1C-1F268917665E}
+		{7D6DD52A-96E4-4E71-8791-6B56C59BAAD9} = {0A464492-7F60-4F1F-A5A8-346B82DEDD59}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E494FA0E-02E3-4972-A708-BC276F873601}

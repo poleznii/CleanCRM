@@ -1,17 +1,18 @@
 ﻿using CleanCRM.Application.Common.Exceptions;
 using CleanCRM.Application.Common.Interfaces;
+using CleanCRM.Application.Common.Models;
 using CleanCRM.Domain.Entities.Customers;
 using MediatR;
 
 namespace CleanCRM.Application.Customers.Commands.EditCustomer;
 
-public record UpdateCustomerCommand : IRequest
+public record UpdateCustomerCommand : IRequest<Result>
 {
     public int Id { get; set; }
     public string? Name { get; set; }
 }
 
-public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
+public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Result>
 {
     private readonly IApplicationDbContext _context;
 
@@ -20,7 +21,7 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
         _context = context;
     }
 
-    public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Customers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
@@ -32,5 +33,6 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
         entity.Name = request.Name;
 
         await _context.SaveChangesAsync(cancellationToken);
+        return Result.Success();
     }
 }
