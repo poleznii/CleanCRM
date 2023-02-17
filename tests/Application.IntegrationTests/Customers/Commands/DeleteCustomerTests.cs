@@ -7,6 +7,25 @@ namespace CleanCRM.Application.IntegrationTests.Customers.Commands;
 public class DeleteCustomerTests : BaseTestFixture
 {
     [Test]
+    public async Task ShouldBeNotEmptyRequest()
+    {
+        var command = new DeleteCustomerCommand();
+
+        await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
+    }
+
+    [Test]
+    public async Task ShouldBeValidCustomerId()
+    {
+        var command = new DeleteCustomerCommand()
+        {
+            Id = -1
+        };
+
+        await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
+    }
+
+    [Test]
     public async Task ShouldBeExistingCustomerId()
     {
         var command = new DeleteCustomerCommand()

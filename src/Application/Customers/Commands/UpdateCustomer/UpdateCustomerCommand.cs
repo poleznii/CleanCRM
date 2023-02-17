@@ -4,7 +4,7 @@ using CleanCRM.Application.Common.Models;
 using CleanCRM.Domain.Entities.Customers;
 using MediatR;
 
-namespace CleanCRM.Application.Customers.Commands.EditCustomer;
+namespace CleanCRM.Application.Customers.Commands.UpdateCustomer;
 
 public record UpdateCustomerCommand : IRequest<Result>
 {

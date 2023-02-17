@@ -1,10 +1,23 @@
-﻿using CleanCRM.Application.Customers.Commands.CreateCustomer;
+﻿using CleanCRM.Application.Common.Exceptions;
+using CleanCRM.Application.Customers.Commands.CreateCustomer;
 using CleanCRM.Application.Customers.Queries.GetCustomerList;
 
 namespace CleanCRM.Application.IntegrationTests.Customers.Queries;
 
 public class GetCustomerListTests : BaseTestFixture
 {
+    [Test]
+    public async Task ShouldBeValidListParams()
+    {
+        var query = new GetCustomerListQuery()
+        {
+            Skip = -1,
+            Take = -1
+        };
+
+        await FluentActions.Invoking(() => SendAsync(query)).Should().ThrowAsync<ValidatorException>();
+    }
+
     [Test]
     public async Task ShouldReturnEmptyList()
     {

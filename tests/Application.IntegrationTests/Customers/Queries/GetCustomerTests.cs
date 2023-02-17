@@ -7,6 +7,25 @@ namespace CleanCRM.Application.IntegrationTests.Customers.Queries;
 public class GetCustomerTests : BaseTestFixture
 {
     [Test]
+    public async Task ShouldBeNotEmptyRequest()
+    {
+        var command = new GetCustomerQuery();
+
+        await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
+    }
+
+    [Test]
+    public async Task ShouldBeValidCustomerId()
+    {
+        var command = new GetCustomerQuery()
+        {
+            Id = -1
+        };
+
+        await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
+    }
+
+    [Test]
     public async Task ShouldBeExistingCustomerId()
     {
         var query = new GetCustomerQuery()

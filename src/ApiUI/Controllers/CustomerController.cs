@@ -1,7 +1,7 @@
 ﻿using CleanCRM.Application.Common.Models;
 using CleanCRM.Application.Customers.Commands.CreateCustomer;
 using CleanCRM.Application.Customers.Commands.DeleteCustomer;
-using CleanCRM.Application.Customers.Commands.EditCustomer;
+using CleanCRM.Application.Customers.Commands.UpdateCustomer;
 using CleanCRM.Application.Customers.Common;
 using CleanCRM.Application.Customers.Queries.GetCustomer;
 using CleanCRM.Application.Customers.Queries.GetCustomerList;
