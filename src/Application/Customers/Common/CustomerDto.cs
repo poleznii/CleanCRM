@@ -1,12 +1,14 @@
-﻿namespace CleanCRM.Application.Customers.Common;
+﻿using CleanCRM.Domain.Entities.Customers;
+
+namespace CleanCRM.Application.Customers.Common;
 
 public class CustomerDto
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public CustomerDto(int id, string name)
+    public string? Name { get; set; }
+    public CustomerDto(Customer entity)
     {
-        Id = id;
-        Name = name;
+        Id = entity.Id;
+        Name = entity.Name;
     }
 }

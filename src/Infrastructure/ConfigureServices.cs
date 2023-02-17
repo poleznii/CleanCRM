@@ -1,4 +1,5 @@
-﻿using CleanCRM.Infrastructure.Data;
+﻿using CleanCRM.Application.Common.Interfaces;
+using CleanCRM.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,8 @@ public static class ConfigureServices
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseInMemoryDatabase("CleanCRM"));
+
+        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
         services.AddScoped<ApplicationDbInitialiser>();
 

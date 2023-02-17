@@ -1,10 +1,11 @@
-﻿using CleanCRM.Domain.Entities.Customers;
+﻿using CleanCRM.Application.Common.Interfaces;
+using CleanCRM.Domain.Entities.Customers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanCRM.Infrastructure.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     //TODO domain events
     private readonly IMediator _mediator;
