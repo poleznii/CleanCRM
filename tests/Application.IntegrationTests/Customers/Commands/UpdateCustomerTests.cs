@@ -68,7 +68,7 @@ public class UpdateCustomerTests : BaseTestFixture
 
         var command = new UpdateCustomerCommand
         {
-            Id = id
+            Id = id.Result
         };
 
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
@@ -86,7 +86,7 @@ public class UpdateCustomerTests : BaseTestFixture
 
         var command = new UpdateCustomerCommand
         {
-            Id = id,
+            Id = id.Result,
             Name = new StringBuilder(101).Insert(0, "a", 101).ToString()
         };
 
@@ -105,7 +105,7 @@ public class UpdateCustomerTests : BaseTestFixture
 
         var command = new UpdateCustomerCommand()
         {
-            Id = id,
+            Id = id.Result,
             Name = "Updated Name"
         };
 
@@ -113,11 +113,11 @@ public class UpdateCustomerTests : BaseTestFixture
 
         var entity = await SendAsync(new GetCustomerQuery()
         {
-            Id = id
+            Id = id.Result
         });
 
         entity.Should().NotBeNull();
-        entity!.Id.Should().Be(id);
-        entity!.Name.Should().Be(command.Name);
+        entity!.Result.Id.Should().Be(id.Result);
+        entity!.Result.Name.Should().Be(command.Name);
     }
 }

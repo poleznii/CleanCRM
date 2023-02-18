@@ -64,12 +64,12 @@ public class DeleteCustomerTests : BaseTestFixture
 
         var command = new DeleteCustomerCommand()
         {
-            Id = id
+            Id = id.Result
         };
 
         var result = await SendAsync(command);
 
         result.Should().NotBeNull();
-        result!.Succeeded.Should().BeTrue();
+        result!.Result.Should().BeTrue();
     }
 }

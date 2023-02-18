@@ -65,13 +65,13 @@ public class GetCustomerTests : BaseTestFixture
 
         var query = new GetCustomerQuery()
         {
-            Id = id
+            Id = id.Result
         };
 
         var entity = await SendAsync(query);
 
         entity.Should().NotBeNull();
-        entity!.Id.Should().Be(id);
-        entity!.Name.Should().Be(command.Name);
+        entity!.Result.Id.Should().Be(id.Result);
+        entity!.Result.Name.Should().Be(command.Name);
     }
 }

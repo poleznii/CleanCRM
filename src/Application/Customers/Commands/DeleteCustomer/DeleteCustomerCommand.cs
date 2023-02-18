@@ -6,12 +6,12 @@ using MediatR;
 
 namespace CleanCRM.Application.Customers.Commands.DeleteCustomer;
 
-public record DeleteCustomerCommand : IRequest<Result>
+public record DeleteCustomerCommand : IRequest<ItemResult<bool>>, IApiRequest
 {
     public int Id { get; set; }
 }
 
-public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, Result>
+public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, ItemResult<bool>>
 {
     private readonly IApplicationDbContext _context;
 
@@ -20,7 +20,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
         _context = context;
     }
 
-    public async Task<Result> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<ItemResult<bool>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Customers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
@@ -32,6 +32,6 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
         _context.Customers.Remove(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
-        return Result.Success();
+        return new ItemResult<bool>() { Result = true };
     }
 }

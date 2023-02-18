@@ -1,5 +1,4 @@
 ﻿using CleanCRM.ApiUI.Services;
-using CleanCRM.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.Extensions.DependencyInjection;

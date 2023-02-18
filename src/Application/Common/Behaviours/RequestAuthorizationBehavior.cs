@@ -3,7 +3,7 @@ using MediatR;
 
 namespace CleanCRM.Application.Common.Behaviours;
 
-public class RequestAuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class RequestAuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull, IApiRequest
 {
     private readonly IEnumerable<IAuthorizer<TRequest>> _authorizers;
     private readonly IMediator _mediator;

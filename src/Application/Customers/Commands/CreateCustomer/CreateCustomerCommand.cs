@@ -1,15 +1,16 @@
 ﻿using CleanCRM.Application.Common.Interfaces;
+using CleanCRM.Application.Common.Models;
 using CleanCRM.Domain.Entities.Customers;
 using MediatR;
 
 namespace CleanCRM.Application.Customers.Commands.CreateCustomer;
 
-public record CreateCustomerCommand : IRequest<int>
+public record CreateCustomerCommand : IRequest<ItemResult<int>>, IApiRequest
 {
     public string? Name { get; set; }
 }
 
-public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, int>
+public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, ItemResult<int>>
 {
     private readonly IApplicationDbContext _context;
 
@@ -18,7 +19,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         _context = context;
     }
 
-    public async Task<int> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<ItemResult<int>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var entity = new Customer()
         {
@@ -29,6 +30,9 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.Id;
+        return new ItemResult<int>()
+        {
+            Result = entity.Id
+        };
     }
 }

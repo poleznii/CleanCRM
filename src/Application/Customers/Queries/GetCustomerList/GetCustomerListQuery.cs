@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanCRM.Application.Customers.Queries.GetCustomerList;
 
-public record GetCustomerListQuery : IRequest<ListResult<CustomerDto>>
+public record GetCustomerListQuery : IRequest<ListResult<CustomerDto>>, IApiRequest
 {
     public int Skip { get; init; } = 0;
     public int Take { get; init; } = 10;

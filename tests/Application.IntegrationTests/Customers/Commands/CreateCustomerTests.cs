@@ -52,7 +52,7 @@ public class CreateCustomerTests : BaseTestFixture
 
         var id = await SendAsync(command);
 
-        var entity = await FindAsync<Customer>(id);
+        var entity = await FindAsync<Customer>(id.Result);
 
         entity.Should().NotBeNull();
         entity!.Name.Should().Be(command.Name);

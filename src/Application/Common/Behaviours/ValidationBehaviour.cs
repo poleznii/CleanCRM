@@ -1,11 +1,11 @@
 ﻿using CleanCRM.Application.Common.Exceptions;
+using CleanCRM.Application.Common.Interfaces;
 using FluentValidation;
 using MediatR;
 
 namespace CleanCRM.Application.Common.Behaviours;
 
-public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-     where TRequest : notnull
+public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull, IApiRequest
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 

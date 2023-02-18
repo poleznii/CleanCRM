@@ -6,13 +6,13 @@ using MediatR;
 
 namespace CleanCRM.Application.Customers.Commands.UpdateCustomer;
 
-public record UpdateCustomerCommand : IRequest<Result>
+public record UpdateCustomerCommand : IRequest<ItemResult<bool>>, IApiRequest
 {
     public int Id { get; set; }
     public string? Name { get; set; }
 }
 
-public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Result>
+public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, ItemResult<bool>>
 {
     private readonly IApplicationDbContext _context;
 
@@ -21,7 +21,7 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
         _context = context;
     }
 
-    public async Task<Result> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<ItemResult<bool>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Customers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
@@ -33,6 +33,6 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
         entity.Name = request.Name;
 
         await _context.SaveChangesAsync(cancellationToken);
-        return Result.Success();
+        return new ItemResult<bool>() { Result = true };
     }
 }
