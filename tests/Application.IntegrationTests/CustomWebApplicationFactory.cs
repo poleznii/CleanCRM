@@ -1,11 +1,15 @@
-﻿using CleanCRM.Infrastructure.Data;
+﻿using CleanCRM.Application.Common.Interfaces;
+using CleanCRM.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 
 namespace CleanCRM.Application.IntegrationTests;
+
+using static Tests;
 
 internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
@@ -23,10 +27,18 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         builder.ConfigureServices((builder, services) =>
         {
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
-            if (descriptor != null)
+            var descriptorUserService = services.SingleOrDefault(x => x.ServiceType == typeof(ICurrentUserService));
+            if (descriptorUserService != null)
             {
-                services.Remove(descriptor);
+                services.Remove(descriptorUserService);
+            }
+            services.AddTransient(provider => Mock.Of<ICurrentUserService>(x => x.UserId == GetCurrentUserId() && x.UserName == GetCurrentUserName()));
+
+
+            var descriptorDb = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+            if (descriptorDb != null)
+            {
+                services.Remove(descriptorDb);
             }
 
             services.AddDbContext<ApplicationDbContext>(options =>

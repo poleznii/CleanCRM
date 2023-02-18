@@ -4,11 +4,23 @@ using CleanCRM.Application.Customers.Queries.GetCustomerList;
 
 namespace CleanCRM.Application.IntegrationTests.Customers.Queries;
 
+using static Tests;
+
 public class GetCustomerListTests : BaseTestFixture
 {
     [Test]
+    public async Task ShouldBeAuthorizedUser()
+    {
+        var command = new GetCustomerListQuery();
+
+        await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Test]
     public async Task ShouldBeValidListParams()
     {
+        await RunAsTestUser();
+
         var query = new GetCustomerListQuery()
         {
             Skip = -1,
@@ -21,6 +33,8 @@ public class GetCustomerListTests : BaseTestFixture
     [Test]
     public async Task ShouldReturnEmptyList()
     {
+        await RunAsTestUser();
+
         var query = new GetCustomerListQuery();
 
         var listResult = await SendAsync(query);
@@ -33,6 +47,8 @@ public class GetCustomerListTests : BaseTestFixture
     [Test]
     public async Task ShouldReturnList()
     {
+        await RunAsTestUser();
+
         var commands = new List<CreateCustomerCommand>();
         for (var i = 0;i < 10; i++)
         {
@@ -59,6 +75,8 @@ public class GetCustomerListTests : BaseTestFixture
     [Test]
     public async Task ShouldReturnPartOfList()
     {
+        await RunAsTestUser();
+
         var commands = new List<CreateCustomerCommand>();
         for (var i = 0; i < 10; i++)
         {
