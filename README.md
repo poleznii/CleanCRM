@@ -53,7 +53,7 @@ This layer contains classes for accessing external resources such as file system
 
 ### ApiUI
 
-This layer depends on both the Application and Infrastructure layers, however, the dependency on Infrastructure is only to support dependency injection. Therefore only *Startup.cs* should reference Infrastructure.
+This layer depends on both the Application and Infrastructure layers, however, the dependency on Infrastructure is only to support dependency injection. Therefore only *Program.cs* should reference Infrastructure.
 
 ## License
 
