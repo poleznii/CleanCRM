@@ -7,15 +7,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{54E3BA7C-94B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0A464492-7F60-4F1F-A5A8-346B82DEDD59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{40317373-46B9-419B-BC23-9263B4C21FD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{40317373-46B9-419B-BC23-9263B4C21FD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{8A0E5E64-FCF8-417E-984A-7BAFD6512196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{8A0E5E64-FCF8-417E-984A-7BAFD6512196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{EC6D4EC5-B41A-46AF-B28D-8A283ECC034D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{EC6D4EC5-B41A-46AF-B28D-8A283ECC034D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiUI", "src\ApiUI\ApiUI.csproj", "{8CA9FE8F-135E-4404-BE26-BE86155B55D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiUI", "src\ApiUI\ApiUI.csproj", "{8CA9FE8F-135E-4404-BE26-BE86155B55D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.IntegrationTests", "tests\Application.IntegrationTests\Application.IntegrationTests.csproj", "{7D6DD52A-96E4-4E71-8791-6B56C59BAAD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.IntegrationTests", "tests\Application.IntegrationTests\Application.IntegrationTests.csproj", "{7D6DD52A-96E4-4E71-8791-6B56C59BAAD9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{51189BA4-D5A0-44AE-9A32-55E83307645E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
