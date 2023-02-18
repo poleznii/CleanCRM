@@ -1,4 +1,5 @@
 # CleanCRM
+[![CodeQL](https://github.com/poleznii/CleanCRM/actions/workflows/codeql.yml/badge.svg)](https://github.com/poleznii/CleanCRM/actions/workflows/codeql.yml)
 
 This is a project with ASP.NET Core following the principles of Clean Architecture.
 
