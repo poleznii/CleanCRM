@@ -1,12 +1,15 @@
 ﻿using CleanCRM.Application.Common.Interfaces;
 using CleanCRM.Domain.Entities.Customers;
+using CleanCRM.Infrastructure.Identity;
 using MediatR;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace CleanCRM.Infrastructure.Data;
 
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
 {
     //TODO domain events
     private readonly IMediator _mediator;

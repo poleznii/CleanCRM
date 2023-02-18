@@ -3,11 +3,7 @@ using CleanCRM.Infrastructure.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
-
-var useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddInfrastructureServices(useInMemoryDatabase, connectionString);
-
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApiUIServices();
 
 var app = builder.Build();
@@ -19,6 +15,9 @@ using (var scope = app.Services.CreateScope())
     await initialiser.InitAsync();
     await initialiser.SeedAsync();
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

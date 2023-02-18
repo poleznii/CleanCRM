@@ -1,4 +1,5 @@
-﻿using CleanCRM.Domain.Entities.Customers;
+﻿using CleanCRM.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -8,11 +9,13 @@ public class ApplicationDbInitialiser
 {
     private readonly ILogger<ApplicationDbInitialiser> _logger;
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public ApplicationDbInitialiser(ILogger<ApplicationDbInitialiser> logger, ApplicationDbContext context)
+    public ApplicationDbInitialiser(ILogger<ApplicationDbInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         _logger = logger;
         _context = context;
+        _userManager = userManager;
     }
 
     public async Task InitAsync()
@@ -46,6 +49,16 @@ public class ApplicationDbInitialiser
 
     private async Task TrySeedAsync()
     {
+        if (!_userManager.Users.Any())
+        {
+            var admin = new ApplicationUser()
+            {
+                UserName = "admin@localhost",
+                Email = "admin@localhost"
+            };
+            await _userManager.CreateAsync(admin, "Admin1!");
+        }
+
         //if (!_context.Customers.Any())
         //{
         //    _context.Customers.AddRange(new[]

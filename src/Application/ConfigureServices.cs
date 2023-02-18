@@ -1,4 +1,5 @@
-﻿using CleanCRM.Application.Common.Behaviours;
+﻿using CleanCRM.Application.Common.Authorization;
+using CleanCRM.Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
 using System.Reflection;
@@ -11,7 +12,10 @@ public static class ConfigureServices
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestAuthorizationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
+        services.AddAuthorizersFromAssembly(Assembly.GetAssembly(typeof(MustBeAuthorizedUserRequirement)));
 
         return services;
     }
