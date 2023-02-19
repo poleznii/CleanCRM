@@ -38,6 +38,10 @@ For example, to add a new migration from the root folder:
 
  `dotnet ef migrations add "customers" --project src\Infrastructure --startup-project src\ApiUI --output-dir Data\Migrations`
 
+ Remove migration:
+
+ `dotnet ef migrations remove --project src\Infrastructure --startup-project src\ApiUI`
+
  ## Overview
 
 ### Domain
