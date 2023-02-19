@@ -2,6 +2,7 @@
 using CleanCRM.Application.Common.Interfaces;
 using CleanCRM.Application.Common.Models;
 using CleanCRM.Domain.Entities.Customers;
+using CleanCRM.Domain.Events.Customers;
 using MediatR;
 
 namespace CleanCRM.Application.Customers.Commands.DeleteCustomer;
@@ -31,7 +32,10 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
 
         _context.Customers.Remove(entity);
 
+        entity.DomainEventAdd(new CustomerDeletedEvent(entity));
+
         await _context.SaveChangesAsync(cancellationToken);
+
         return new ItemResult<bool>() { Result = true };
     }
 }

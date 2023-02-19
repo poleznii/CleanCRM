@@ -1,6 +1,8 @@
-﻿namespace CleanCRM.Domain.Common;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-public abstract class BaseEntity<T>
+namespace CleanCRM.Domain.Common;
+
+public abstract class BaseEntity<T> : BaseDomainEventEntity
 {
     public T Id { get; set; }
 }

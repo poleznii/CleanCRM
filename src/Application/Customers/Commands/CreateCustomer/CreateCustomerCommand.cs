@@ -1,6 +1,7 @@
 ﻿using CleanCRM.Application.Common.Interfaces;
 using CleanCRM.Application.Common.Models;
 using CleanCRM.Domain.Entities.Customers;
+using CleanCRM.Domain.Events.Customers;
 using MediatR;
 
 namespace CleanCRM.Application.Customers.Commands.CreateCustomer;
@@ -27,6 +28,8 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         };
 
         _context.Customers.Add(entity);
+
+        entity.DomainEventAdd(new CustomerCreatedEvent(entity));
 
         await _context.SaveChangesAsync(cancellationToken);
 

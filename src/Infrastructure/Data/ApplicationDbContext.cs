@@ -4,14 +4,12 @@ using CleanCRM.Infrastructure.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace CleanCRM.Infrastructure.Data;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
 {
-    //TODO domain events
     private readonly IMediator _mediator;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IMediator mediator) : base(options)
@@ -31,6 +29,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        await _mediator.PublishDomainEvents(this);
+
         return await base.SaveChangesAsync(cancellationToken);
     }
 }

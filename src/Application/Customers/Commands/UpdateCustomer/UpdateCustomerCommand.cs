@@ -2,6 +2,7 @@
 using CleanCRM.Application.Common.Interfaces;
 using CleanCRM.Application.Common.Models;
 using CleanCRM.Domain.Entities.Customers;
+using CleanCRM.Domain.Events.Customers;
 using MediatR;
 
 namespace CleanCRM.Application.Customers.Commands.UpdateCustomer;
@@ -32,7 +33,10 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
 
         entity.Name = request.Name;
 
+        entity.DomainEventAdd(new CustomerUpdatedEvent(entity));
+
         await _context.SaveChangesAsync(cancellationToken);
+
         return new ItemResult<bool>() { Result = true };
     }
 }
