@@ -13,5 +13,6 @@ public class CrmTypeFieldConfiguration : IEntityTypeConfiguration<CrmTypeField>
 
         builder
             .OwnsOne(b => b.FieldType);
+
     }
 }

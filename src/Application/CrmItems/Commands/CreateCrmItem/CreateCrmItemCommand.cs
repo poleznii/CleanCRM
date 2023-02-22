@@ -5,13 +5,12 @@ using CleanCRM.Domain.Entities.CrmItems;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace CleanCRM.Application.CrmItems.Commands.CreateCrmItem;
 
 public class CreateCrmItemCommand : IRequest<ItemResult<string>>, IApiRequest
 {
     public string Type { get; set; } = null!;
-    public IDictionary<string, CrmItemFieldDto> Fields { get; init; } = new Dictionary<string, CrmItemFieldDto>();
+    public IDictionary<string, CrmItemFieldDto> Fields { get; set; } = new Dictionary<string, CrmItemFieldDto>();
 }
 
 public class CreateCrmItemCommandHandler : IRequestHandler<CreateCrmItemCommand, ItemResult<string>>
@@ -26,7 +25,7 @@ public class CreateCrmItemCommandHandler : IRequestHandler<CreateCrmItemCommand,
     public async Task<ItemResult<string>> Handle(CreateCrmItemCommand request, CancellationToken cancellationToken)
     {
         var typeEntity = await _context.CrmTypes.Include(x => x.Fields)
-                                                .FirstAsync(x => x.Id == request.Type, cancellationToken);
+            .FirstAsync(x => x.Id == request.Type, cancellationToken);
 
         var entity = new CrmItem()
         {

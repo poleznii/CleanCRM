@@ -25,7 +25,7 @@ public class DeleteCrmItemCommandHandler : IRequestHandler<DeleteCrmItemCommand,
     public async Task<ItemResult<bool>> Handle(DeleteCrmItemCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.CrmItems.Include(x => x.Fields).ThenInclude(x => x.Values)
-                                            .FirstOrDefaultAsync(x => x.Id == request.Id && x.TypeId == request.Type, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == request.Id && x.TypeId == request.Type, cancellationToken);
 
         if (entity == null)
         {

@@ -35,7 +35,7 @@ public class UpdateCrmItemCommandHandler : IRequestHandler<UpdateCrmItemCommand,
         }
 
         var typeEntity = await _context.CrmTypes.Include(x => x.Fields)
-                                                .FirstAsync(x => x.Id == request.Type, cancellationToken);
+            .FirstAsync(x => x.Id == request.Type, cancellationToken);
 
         foreach (var fieldPair in request.Fields)
         {
