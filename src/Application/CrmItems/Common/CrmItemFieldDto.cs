@@ -5,7 +5,7 @@ namespace CleanCRM.Application.CrmItems.Common;
 
 public record CrmItemFieldDto
 {
-    public IEnumerable<string?> Values { get; init; }
+    public IList<string?> Values { get; init; } = new List<string?>();
 
     public IDictionary<string, object> Metadata { get; private init; } = new Dictionary<string, object>();
 
@@ -14,7 +14,7 @@ public record CrmItemFieldDto
 
     public CrmItemFieldDto(CrmItemField entity)
     {
-        Values = entity.Values.Select(x => x.Raw);
+        Values = entity.Values.Select(x => x.Raw).ToList();
 
         Metadata.Add("type", entity.Field.FieldType.ToString());
     }
