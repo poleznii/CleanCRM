@@ -1,4 +1,5 @@
-﻿using CleanCRM.Infrastructure.Identity;
+﻿using CleanCRM.Infrastructure.Data.Seeders;
+using CleanCRM.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -59,25 +60,10 @@ public class ApplicationDbInitialiser
             await _userManager.CreateAsync(admin, "Admin1!");
         }
 
-        //if (!_context.Customers.Any())
-        //{
-        //    _context.Customers.AddRange(new[]
-        //    {
-        //        new Customer
-        //        {
-        //            Name = "Customer 1",
-        //        },
-        //        new Customer
-        //        {
-        //            Name = "Customer 2",
-        //        },
-        //        new Customer
-        //        {
-        //            Name = "Customer 3",
-        //        }
-        //    });
 
-        //    await _context.SaveChangesAsync();
-        //}
+        if (!_context.CrmTypes.Any())
+        {
+            await CrmTaskSeeder.SeedAsync(_context);
+        }
     }
 }

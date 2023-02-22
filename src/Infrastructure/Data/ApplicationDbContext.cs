@@ -1,4 +1,6 @@
 ﻿using CleanCRM.Application.Common.Interfaces;
+using CleanCRM.Domain.Entities.CrmTypes;
+using CleanCRM.Domain.Entities.CrmItems;
 using CleanCRM.Domain.Entities.Customers;
 using CleanCRM.Infrastructure.Identity;
 using MediatR;
@@ -18,6 +20,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     }
 
     public DbSet<Customer> Customers => Set<Customer>();
+
+
+    public DbSet<CrmItem> CrmItems => Set<CrmItem>();
+    public DbSet<CrmItemField> CrmItemProperties => Set<CrmItemField>();
+
+    public DbSet<CrmType> CrmTypes => Set<CrmType>();
+    public DbSet<CrmTypeField> CrmTypeFields => Set<CrmTypeField>();
 
 
     protected override void OnModelCreating(ModelBuilder builder)
