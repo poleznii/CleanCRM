@@ -12,6 +12,7 @@ public interface IApplicationDbContext
 
     DbSet<CrmItem> CrmItems { get; }
     DbSet<CrmItemField> CrmItemProperties { get; }
+    DbSet<CrmItemPropertyValue> CrmItemPropertyValues { get; }
 
     DbSet<CrmType> CrmTypes { get; }
     DbSet<CrmTypeField> CrmTypeFields { get; }

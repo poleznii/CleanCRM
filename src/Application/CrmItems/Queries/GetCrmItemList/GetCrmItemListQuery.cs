@@ -8,7 +8,7 @@ namespace CleanCRM.Application.CrmItems.Queries.GetCrmItemList;
 
 public class GetCrmItemListQuery : IRequest<ListResult<CrmItemDto>>, IApiRequest
 {
-    public string Type { get; set; }
+    public string Type { get; set; } = null!;
     public int Skip { get; init; } = 0;
     public int Take { get; init; } = 10;
 }
@@ -24,8 +24,11 @@ public class GetCrmItemListQueryHandler : IRequestHandler<GetCrmItemListQuery, L
 
     public async Task<ListResult<CrmItemDto>> Handle(GetCrmItemListQuery request, CancellationToken cancellationToken)
     {
-        var fields = _context.CrmTypeFields.Where(x => x.CrmTypeId.Equals(request.Type)).ToListAsync(cancellationToken);
-        var query = _context.CrmItems.Include(x => x.Fields).ThenInclude(x => x.Values).Where(x => x.TypeId.Equals(request.Type)).OrderBy(x => x.Id).AsQueryable();
+        var query = _context.CrmItems
+                                .Include(x => x.Type).ThenInclude(x => x.Fields)
+                                .Include(x => x.Fields).ThenInclude(x => x.Values)
+                                .Where(x => x.TypeId.Equals(request.Type))
+                                .OrderBy(x => x.Id).AsQueryable();
 
         var total = await query.CountAsync(cancellationToken);
         var entities = await query.Skip(request.Skip).Take(request.Take).ToListAsync(cancellationToken);

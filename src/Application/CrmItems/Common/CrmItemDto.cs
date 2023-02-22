@@ -6,14 +6,14 @@ public record CrmItemDto
 {
     public string Id { get; init; }
     public string Type { get; init; }
-    public IList<CrmItemFieldDto> Fields { get; private init; } = new List<CrmItemFieldDto>();
+    public IDictionary<string, CrmItemFieldDto> Fields { get; private init; } = new Dictionary<string, CrmItemFieldDto>();
     public CrmItemDto(CrmItem entity)
     {
         Id = entity.Id;
         Type = entity.TypeId;
-        foreach (var field in entity.Fields)
+        foreach (var item in entity.Fields)
         {
-            Fields.Add(new CrmItemFieldDto(field));
+            Fields.Add(item.Field.Name, new CrmItemFieldDto(item));
         }
     }
 }

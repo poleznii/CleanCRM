@@ -1,17 +1,13 @@
 ﻿using CleanCRM.Application.Common.Interfaces;
+using CleanCRM.Application.Common.Validators;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace CleanCRM.Application.CrmItems.Queries.GetCrmItemList;
 
-public class GetCrmItemListQueryValidator : AbstractValidator<GetCrmItemListQuery>
+public class GetCrmItemListQueryValidator : CrmItemValidator<GetCrmItemListQuery>
 {
-    private readonly IApplicationDbContext _context;
-
-    public GetCrmItemListQueryValidator(IApplicationDbContext context)
+    public GetCrmItemListQueryValidator(IApplicationDbContext context) : base(context)
     {
-        _context = context;
-
         RuleFor(x => x.Type)
             .NotEmpty();
 
@@ -26,11 +22,5 @@ public class GetCrmItemListQueryValidator : AbstractValidator<GetCrmItemListQuer
 
         RuleFor(x => x.Take)
             .GreaterThanOrEqualTo(1);
-    }
-
-    //TODO cache
-    public async Task<bool> BeInListOfTypes(GetCrmItemListQuery model, string type, CancellationToken cancellationToken)
-    {
-        return await _context.CrmTypes.AnyAsync(l => l.Id.Equals(type), cancellationToken);
     }
 }

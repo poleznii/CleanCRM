@@ -24,6 +24,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
 
     public DbSet<CrmItem> CrmItems => Set<CrmItem>();
     public DbSet<CrmItemField> CrmItemProperties => Set<CrmItemField>();
+    public DbSet<CrmItemPropertyValue> CrmItemPropertyValues => Set<CrmItemPropertyValue>();
 
     public DbSet<CrmType> CrmTypes => Set<CrmType>();
     public DbSet<CrmTypeField> CrmTypeFields => Set<CrmTypeField>();
