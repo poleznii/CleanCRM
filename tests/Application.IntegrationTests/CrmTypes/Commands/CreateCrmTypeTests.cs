@@ -9,7 +9,7 @@ namespace CleanCRM.Application.IntegrationTests.CrmTypes.Commands;
 
 using static Tests;
 
-public class CreateCrmTypeTests : BaseTestFixture
+internal class CreateCrmTypeTests : BaseTestFixture
 {
     [Test]
     public async Task ShouldBeAuthorizedUser()

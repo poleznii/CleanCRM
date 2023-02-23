@@ -1,5 +1,6 @@
 ﻿using CleanCRM.Application.Common.Exceptions;
 using CleanCRM.Application.CrmItems.Commands.CreateCrmItem;
+using CleanCRM.Application.CrmItems.Commands.UpdateCrmItem;
 using CleanCRM.Application.CrmItems.Common;
 using CleanCRM.Application.CrmItems.Queries.GetCrmItem;
 using CleanCRM.Application.IntegrationTests.CrmTypes.Common;
@@ -8,12 +9,12 @@ namespace CleanCRM.Application.IntegrationTests.CrmItems.Commands;
 
 using static Tests;
 
-internal class CreateCrmItemTests : BaseTestFixture
+internal class UpdateCrmItemTests : BaseTestFixture
 {
     [Test]
     public async Task ShouldBeAuthorizedUser()
     {
-        var command = new CreateCrmItemCommand();
+        var command = new UpdateCrmItemCommand();
 
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<UnauthorizedAccessException>();
     }
@@ -23,7 +24,7 @@ internal class CreateCrmItemTests : BaseTestFixture
     {
         await RunAsTestUser();
 
-        var command = new CreateCrmItemCommand();
+        var command = new UpdateCrmItemCommand();
 
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
     }
@@ -33,38 +34,67 @@ internal class CreateCrmItemTests : BaseTestFixture
     {
         await RunAsTestUser();
 
-        var command = new CreateCrmItemCommand
+        var command = new UpdateCrmItemCommand
         {
-            Type = "customer"
+            Type = "customer",
+            Id = "id"
         };
 
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
     }
 
     [Test]
-    public async Task ShouldCreateCrmItemWithNoFields()
+    public async Task ShouldBeExistingId()
     {
         await RunAsTestUser();
 
         var typeId = await SendAsync(CrmTypeTests.GetCreateTypeCommand());
 
-        var entity = await SendAsync(new CreateCrmItemCommand
+        var command = new UpdateCrmItemCommand()
+        {
+            Id = "id",
+            Type = typeId.Result
+        };
+
+        await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Test]
+    public async Task ShouldUpdateCrmItemWithNoFields()
+    {
+        await RunAsTestUser();
+
+        var typeId = await SendAsync(CrmTypeTests.GetCreateTypeCommand());
+
+        var createdEntity = await SendAsync(new CreateCrmItemCommand
         {
             Type = typeId.Result
         });
 
-        entity.Result.Should().NotBeNull();
+
+        var command = new UpdateCrmItemCommand()
+        {
+            Id = createdEntity.Result,
+            Type = typeId.Result
+        };
+
+        var id = await SendAsync(command);
+
+        id.Result.Should().BeTrue();
     }
 
     [Test]
-    public async Task ShouldCreateCrmItemWithOneField()
+    public async Task ShouldUpdateCrmItemWithOneField()
     {
         await RunAsTestUser();
 
         var typeId = await SendAsync(CrmTypeTests.GetCreateTypeCommand());
 
-        var createCommand = new CreateCrmItemCommand
+        var id = await SendAsync(new CreateCrmItemCommand() { Type = typeId.Result });
+
+        var command = new UpdateCrmItemCommand()
         {
+            Id = id.Result,
             Type = typeId.Result,
             Fields = new Dictionary<string, CrmItemFieldDto>()
             {
@@ -74,7 +104,9 @@ internal class CreateCrmItemTests : BaseTestFixture
             }
         };
 
-        var id = await SendAsync(createCommand);
+        var updateResult = await SendAsync(command);
+
+        updateResult.Result.Should().BeTrue();
 
         var entity = await SendAsync(new GetCrmItemQuery()
         {
@@ -95,8 +127,6 @@ internal class CreateCrmItemTests : BaseTestFixture
         entity.Result!.Fields.ContainsKey("not_exists_field2").Should().BeFalse();
     }
 
-
-
     [Test]
     public async Task ShouldCreateCrmItemWithAllFields()
     {
@@ -104,19 +134,23 @@ internal class CreateCrmItemTests : BaseTestFixture
 
         var typeId = await SendAsync(CrmTypeTests.GetCreateTypeCommand());
 
-        var createCommand = new CreateCrmItemCommand
+        var id = await SendAsync(new CreateCrmItemCommand() { Type = typeId.Result });
+
+        var command = new UpdateCrmItemCommand()
         {
+            Id = id.Result,
             Type = typeId.Result,
             Fields = new Dictionary<string, CrmItemFieldDto>()
             {
                 { "title", new CrmItemFieldDto() { Values = { "Some title" } } },
                 { "description", new CrmItemFieldDto() { Values = { "Some description" } } },
                 { "views", new CrmItemFieldDto() { Values = { "10000" } } },
-
             }
         };
 
-        var id = await SendAsync(createCommand);
+        var updateResult = await SendAsync(command);
+
+        updateResult.Result.Should().BeTrue();
 
         var entity = await SendAsync(new GetCrmItemQuery()
         {

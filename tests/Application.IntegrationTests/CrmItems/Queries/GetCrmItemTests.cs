@@ -4,28 +4,18 @@ using CleanCRM.Application.CrmItems.Common;
 using CleanCRM.Application.CrmItems.Queries.GetCrmItem;
 using CleanCRM.Application.IntegrationTests.CrmTypes.Common;
 
-namespace CleanCRM.Application.IntegrationTests.CrmItems.Commands;
+namespace CleanCRM.Application.IntegrationTests.CrmItems.Queries;
 
 using static Tests;
 
-internal class CreateCrmItemTests : BaseTestFixture
+internal class GetCrmItemTests : BaseTestFixture
 {
     [Test]
     public async Task ShouldBeAuthorizedUser()
     {
-        var command = new CreateCrmItemCommand();
+        var command = new GetCrmItemQuery();
 
         await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<UnauthorizedAccessException>();
-    }
-
-    [Test]
-    public async Task ShouldBeNotEmptyRequest()
-    {
-        await RunAsTestUser();
-
-        var command = new CreateCrmItemCommand();
-
-        await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
     }
 
     [Test]
@@ -33,37 +23,63 @@ internal class CreateCrmItemTests : BaseTestFixture
     {
         await RunAsTestUser();
 
-        var command = new CreateCrmItemCommand
+        var query = new GetCrmItemQuery()
         {
-            Type = "customer"
+            Type = "customer",
+            Id = "id"
         };
 
-        await FluentActions.Invoking(() => SendAsync(command)).Should().ThrowAsync<ValidatorException>();
+        await FluentActions.Invoking(() => SendAsync(query)).Should().ThrowAsync<ValidatorException>();
     }
 
     [Test]
-    public async Task ShouldCreateCrmItemWithNoFields()
+    public async Task ShouldBeExistingId()
     {
         await RunAsTestUser();
 
         var typeId = await SendAsync(CrmTypeTests.GetCreateTypeCommand());
 
-        var entity = await SendAsync(new CreateCrmItemCommand
+        var query = new GetCrmItemQuery()
+        {
+            Type = typeId.Result,
+            Id = "id"
+        };
+
+        await FluentActions.Invoking(() => SendAsync(query)).Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Test]
+    public async Task ShouldReturnCrmItemWithNoFields()
+    {
+        await RunAsTestUser();
+
+        var typeId = await SendAsync(CrmTypeTests.GetCreateTypeCommand());
+
+        var id = await SendAsync(new CreateCrmItemCommand
         {
             Type = typeId.Result
         });
 
+        var entity = await SendAsync(new GetCrmItemQuery()
+        {
+            Type = typeId.Result,
+            Id = id.Result
+        });
+
         entity.Result.Should().NotBeNull();
+        entity.Result!.Id.Should().Be(id.Result);
+        entity.Result!.Type.Should().Be(typeId.Result);
+        entity.Result!.Fields.Should().BeEmpty();
     }
 
     [Test]
-    public async Task ShouldCreateCrmItemWithOneField()
+    public async Task ShouldReturnCrmItemWithOneField()
     {
         await RunAsTestUser();
 
         var typeId = await SendAsync(CrmTypeTests.GetCreateTypeCommand());
 
-        var createCommand = new CreateCrmItemCommand
+        var id = await SendAsync(new CreateCrmItemCommand
         {
             Type = typeId.Result,
             Fields = new Dictionary<string, CrmItemFieldDto>()
@@ -72,9 +88,7 @@ internal class CreateCrmItemTests : BaseTestFixture
                 { "not_exists_field1", new CrmItemFieldDto() { Values = { "val 1" } } },
                 { "not_exists_field2", new CrmItemFieldDto() { Values = { "val 2" } } }
             }
-        };
-
-        var id = await SendAsync(createCommand);
+        });
 
         var entity = await SendAsync(new GetCrmItemQuery()
         {
@@ -95,28 +109,23 @@ internal class CreateCrmItemTests : BaseTestFixture
         entity.Result!.Fields.ContainsKey("not_exists_field2").Should().BeFalse();
     }
 
-
-
     [Test]
-    public async Task ShouldCreateCrmItemWithAllFields()
+    public async Task ShouldReturnCrmItemWithAllFields()
     {
         await RunAsTestUser();
 
         var typeId = await SendAsync(CrmTypeTests.GetCreateTypeCommand());
 
-        var createCommand = new CreateCrmItemCommand
+        var id = await SendAsync(new CreateCrmItemCommand
         {
             Type = typeId.Result,
             Fields = new Dictionary<string, CrmItemFieldDto>()
             {
                 { "title", new CrmItemFieldDto() { Values = { "Some title" } } },
                 { "description", new CrmItemFieldDto() { Values = { "Some description" } } },
-                { "views", new CrmItemFieldDto() { Values = { "10000" } } },
-
+                { "views", new CrmItemFieldDto() { Values = { "10000" } } }
             }
-        };
-
-        var id = await SendAsync(createCommand);
+        });
 
         var entity = await SendAsync(new GetCrmItemQuery()
         {

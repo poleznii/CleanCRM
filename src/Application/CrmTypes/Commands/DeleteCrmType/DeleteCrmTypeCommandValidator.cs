@@ -17,7 +17,7 @@ public class DeleteCrmTypeCommandValidator : AbstractValidator<DeleteCrmTypeComm
         When(x => !string.IsNullOrEmpty(x.Id), () =>
         {
             RuleFor(x => x.Id)
-            .MustAsync(MustDoNotHaveItems);
+                .MustAsync(MustDoNotHaveItems);
         });
     }
 
